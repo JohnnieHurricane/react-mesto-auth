@@ -1,0 +1,11 @@
+.page {
+    max-width: 880px;
+    margin: 0 auto;
+    background-color: #000;
+    display: block;
+    letter-spacing: normal;    
+}
+
+html {
+    background-color: black;
+}

@@ -1,0 +1,13 @@
+.popup__callback-image {
+  max-width: 120px;
+  max-height: 120px;
+  margin: 60px auto 0;
+  object-fit: cover;
+  display: block;
+}
+
+@media screen and (max-width: 881px) {
+  .popup__callback-image {
+    margin: 50px auto 0;
+  }
+}

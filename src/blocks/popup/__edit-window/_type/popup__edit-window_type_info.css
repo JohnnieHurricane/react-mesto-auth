@@ -1,0 +1,8 @@
+.popup__edit-window_type_info {
+    width: 430px;
+    height: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
