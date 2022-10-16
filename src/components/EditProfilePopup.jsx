@@ -37,7 +37,8 @@ function EditProfilePopup(props) {
       onClose={onClose}
       onSubmit={(e) => handleSubmit(e)}
       name={"edit-profile"}
-      title="Редактировать профиль">
+      title="Редактировать профиль"
+      buttonText="Сохранить">
       <div>
         <div className="popup__input-wrapper">
           <input
@@ -67,9 +68,6 @@ function EditProfilePopup(props) {
           />
           <span className="popup__input-error about-error"></span>
         </div>
-        <button type="submit" className="popup__save">
-          Сохранить
-        </button>
       </div>
     </PopupWithForm>
   )

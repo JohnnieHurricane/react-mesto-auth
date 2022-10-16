@@ -2,7 +2,7 @@ import React from 'react'
 
 function PopupWithForm(props) {
 
-const { name, isOpen, onClose, title, onSubmit, children } = props
+const { name, isOpen, onClose, title, onSubmit, children, buttonText } = props
 
   return (
     <div
@@ -21,6 +21,9 @@ const { name, isOpen, onClose, title, onSubmit, children } = props
             onSubmit={onSubmit}
             noValidate>
             {children}
+            <button type="submit" className="popup__save">
+          {buttonText}
+        </button>
           </form>
         </div>
       </div>

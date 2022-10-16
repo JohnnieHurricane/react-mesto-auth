@@ -2,23 +2,34 @@ import React from 'react'
 import PopupWithForm from './PopupWithForm'
 
 function AddPlacePopup(props) {
+  const { onAddPlace, isOpen, onClose } = props
 
-  const titleRef = React.useRef('')
-  const linkRef = React.useRef('')
+  const [image, setImage] = React.useState('')
+  const [description, setDescription] = React.useState('')
 
-  const {onAddPlace, isOpen, onClose} = props
+  function handleImageChange(e) {
+    setImage(e.target.value)
+  }
+
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value)
+  }  
 
   function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     onAddPlace({
-      name: titleRef.current.value,
-      link: linkRef.current.value,
+      name : description,
+      link : image,
     })
-
-    titleRef.current.value = ''
-    linkRef.current.value = ''
   }
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      setImage('')
+      setDescription('')
+    }
+  }, [isOpen])
 
   return (
     <PopupWithForm
@@ -26,7 +37,8 @@ function AddPlacePopup(props) {
       onClose={onClose}
       onSubmit={(e) => handleSubmit(e)}
       name="edit-avatar"
-      title="Новое место">
+      title="Новое место"
+      buttonText="Создать">
       <div>
         <div className="popup__input-wrapper">
           <input
@@ -36,7 +48,8 @@ function AddPlacePopup(props) {
             minLength="2"
             maxLength="30"
             placeholder="Название"
-            ref={titleRef}
+            value={description}
+            onChange={handleDescriptionChange}
             required
           />
           <span className="popup__input-error popupNewTitle-error"></span>
@@ -47,14 +60,12 @@ function AddPlacePopup(props) {
             name="popupNewLink"
             className="popup__input popup__new-link"
             placeholder="Ссылка на картинку"
-            ref={linkRef}
+            value={image}
+            onChange={handleImageChange}
             required
           />
           <span className="popup__input-error popupNewLink-error"></span>
-        </div>
-        <button type="submit" className="popup__save">
-          Создать
-        </button>
+        </div>        
       </div>
     </PopupWithForm>
   )

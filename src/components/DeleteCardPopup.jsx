@@ -18,8 +18,8 @@ function DeleteCardPopup(props) {
       onClose={onClose}
       onSubmit={(e) => handleSubmit(e)}
       name="delete-card"
-      title="Вы уверены?">
-      <button className="popup__save popup__save_delete-card" type="submit">Да</button>
+      title="Вы уверены?"
+      buttonText="Да">
     </PopupWithForm>
   )
 

@@ -34,18 +34,50 @@ function App() {
 
   const history = useHistory();
 
-  
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth
+        .getUserToken(jwt)
+        .then(data => {
+          if (data) {
+            setMail(data.email)
+            setLoggedIn(true)
+            history.push("/")
+          }
+        })
+        .catch((err) => console.log(err))
+    }
+  }, [history]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([api.getUserInfoFromServer(), api.getCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsRegister(false);
+          setIsInfoTooltipOpen(true);
+        })
+    }
+  }, [loggedIn]);
+
+
   function handleRegister(email, password) {
     auth
       .register(email, password)
       .then(() => {
         setIsRegister(true);
-        setIsInfoTooltipOpen(true);
         history.push("/sign-in");
       })
       .catch((err) => {
         console.log(err);
         setIsRegister(false);
+      })
+      .finally(() => {
         setIsInfoTooltipOpen(true);
       })
   }
@@ -125,27 +157,31 @@ function App() {
   function handleUpdateUser(user) {
     api
       .patchUserInfoToServer(user)
-      .then((user) => setCurrentUser(user))
+      .then((user) => {
+        setCurrentUser(user)
+        closeAllPopups()
+      })
       .catch((err) => console.log(err))
-      .finally(() => closeAllPopups())
   }
 
   function handleUpdateAvatar(data) {
     api
       .patchUserAvatarToServer(data)
-      .then((data) => setCurrentUser(data))
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups()
+      })
       .catch((err) => console.log(err))
-      .finally(() => closeAllPopups())
   }
 
   function handleAddPlaceSubmit(card) {
     api
       .postCard(card)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([newCard, ...cards])
+        closeAllPopups()
       })
       .catch((err) => console.log(err))
-      .finally(() => closeAllPopups())
   }
 
 
@@ -159,38 +195,6 @@ function App() {
     setSelectedCard({})
 
   }
-
-  useEffect(() => {
-    if (loggedIn) {
-      Promise.all([api.getUserInfoFromServer(), api.getCards()])
-        .then(([userData, cardsData]) => {
-          setCurrentUser(userData);
-          setCards(cardsData);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsRegister(false);
-          setIsInfoTooltipOpen(true);
-        })
-    }
-  }, [loggedIn]);
-
-  useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      auth
-        .getUserToken(jwt)
-        .then(data => {
-          if (data) {
-            setMail(data.email);
-            setLoggedIn(true);
-            history.push("/");
-          }
-        })
-        .catch((err) => console.log(err))
-    }
-  }, []);
-
 
   return (
     <Router history={history}>
